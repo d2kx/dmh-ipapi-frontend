@@ -2,7 +2,27 @@
   "name": "dmh-ipapi-frontend",
   "version": "1.0.0",
   "description": "frontend part of dmh-ipapi to provide ip to geolocation services",
-  "main": "index.js",
-  "scripts": {},
-  "author": "Dennis Martin Herbers"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "author": "Dennis Martin Herbers",
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.5"
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5.0.0"
+    }
+  }
 }
