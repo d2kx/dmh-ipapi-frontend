@@ -2,6 +2,7 @@
   "name": "dmh-ipapi-frontend",
   "version": "1.0.0",
   "description": "frontend part of dmh-ipapi to provide ip to geolocation services",
+  "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
@@ -21,6 +22,8 @@
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.3.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.9.0"
