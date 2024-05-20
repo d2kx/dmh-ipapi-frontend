@@ -1,55 +1,70 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
 import Typography from '@mui/material/Typography';
+import { useDebounce } from 'use-debounce';
+import { Container } from '@mui/material';
 
-function sleep(duration: number): Promise<void> {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
+interface Location {
+  city?: string;
+  country?: string;
+  ipAddress?: string;
+  status: string;
 }
 
-function CountryText() {
-  const { filled } = useFormControl() || {};
-
-  const country = useMemo(() => {
-    if (filled) {
-      async () => {
-        await sleep(1e3);
-        console.log('test');
-      };
-
-      return 'DE';
-    }
-
-    return 'USA';
-  }, [filled]);
-
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {country}
-    </Typography>
-  );
-}
+const URL = 'http://localhost:3100/api/location/';
 
 export default function LocationInput() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [location, setLocation] = useState<Location>({ status: 'ready' });
+
+  const [debounceInput] = useDebounce(inputValue, 1000);
+
+  const handleInput = (input: string) => {
+    setLoading(input === debounceInput ? false : true);
+
+    setInputValue(input);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!debounceInput) {
+        setLoading(false);
+        setLocation({ status: 'ready' });
+        return;
+      }
+
+      try {
+        const response = await fetch(URL + debounceInput);
+        const data = await response.json();
+        setLoading(false);
+        setLocation(data);
+      } catch (error) {
+        setLoading(false);
+        setLocation({ status: 'error' });
+      }
+    };
+
+    fetchData();
+  }, [debounceInput]);
+
   return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <FormControl>
-        <Input placeholder="hi" />
-        <CountryText />
-      </FormControl>
+    <Box sx={{ width: '100%' }}>
+      <Stack spacing={2}>
+        <Input
+          placeholder="IPv4/IPv6"
+          value={inputValue}
+          onChange={(e) => handleInput(e.target.value)}
+        />
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <div>{location ? JSON.stringify(location) : ''}</div>
+        )}
+      </Stack>
     </Box>
   );
 }
