@@ -5,6 +5,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Input from '@mui/material/Input';
 import Typography from '@mui/material/Typography';
 import { useDebounce } from 'use-debounce';
+import PendingIcon from '@mui/icons-material/Pending';
+import CheckIcon from '@mui/icons-material/Check';
+import ErrorIcon from '@mui/icons-material/Error';
+import { green } from '@mui/material/colors';
 
 interface Location {
   city?: string;
@@ -62,38 +66,48 @@ export default function LocationInput() {
           placeholder="valid IPv4/IPv6 address"
           type="search"
         />
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <div>
-            <div>{location ? JSON.stringify(location) : ''}</div>
-            {location.status === 'success' && (
-              <ul>
-                <li>Stadt: {location.city}</li>
-                <li>Country: {location.country}</li>
-                <li>IP address: {location.ipAddress}</li>
-              </ul>
-            )}
-            {location.status === 'fail' && (
-              <ul>
-                <li>
-                  Oh no! The external IP Geolocation API has not been able to
-                  process your request
-                </li>
-                <li>Error: {location.message}</li>
-              </ul>
-            )}
-            {location.status === 'error' && (
-              <ul>
-                <li>
-                  Oh no! The dmh-ipapi-backend has not been able to process your
-                  request
-                </li>
-                <li>Error: {location.message}</li>
-              </ul>
-            )}
-          </div>
-        )}
+        <Stack direction="row" spacing={2}>
+          {loading ? (
+            <CircularProgress color="info" />
+          ) : (
+            <div>
+              {location.status === 'success' && (
+                <div>
+                  <CheckIcon color="success" sx={{ fontSize: 40 }} />
+                  <ul>
+                    <li>Stadt: {location.city}</li>
+                    <li>Country: {location.country}</li>
+                    <li>IP address: {location.ipAddress}</li>
+                  </ul>
+                </div>
+              )}
+              {location.status === 'fail' && (
+                <div>
+                  <ErrorIcon color="error" sx={{ fontSize: 40 }} />
+                  <ul>
+                    <li>
+                      Oh no! The external IP Geolocation API has not been able
+                      to process your request
+                    </li>
+                    <li>Error: {location.message}</li>
+                  </ul>
+                </div>
+              )}
+              {location.status === 'error' && (
+                <div>
+                  <ErrorIcon color="error" sx={{ fontSize: 40 }} />
+                  <ul>
+                    <li>
+                      Oh no! The dmh-ipapi-backend has not been able to process
+                      your request
+                    </li>
+                    <li>Error: {location.message}</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </Stack>
       </Stack>
     </Box>
   );
