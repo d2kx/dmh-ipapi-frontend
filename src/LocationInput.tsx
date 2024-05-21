@@ -18,8 +18,7 @@ interface LocationState {
   status: 'error' | 'fail' | 'ready' | 'success';
 }
 
-let URL =
-  'http://dmh-ipapi-backend-micro.us-east-1.elasticbeanstalk.com/api/location/';
+let URL = 'https://d2mbwc1txx5qu9.cloudfront.net/api/location/';
 
 const LOCAL_DOMAINS = ['localhost', '127.0.0.1'];
 if (LOCAL_DOMAINS.includes(window.location.hostname)) {
