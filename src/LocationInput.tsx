@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
 import Input from '@mui/material/Input';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useDebounce } from 'use-debounce';
 import CheckIcon from '@mui/icons-material/Check';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
-import Container from '@mui/material/Container';
+import { useDebounce } from 'use-debounce';
 
 interface LocationState {
   city?: string;
@@ -68,12 +67,16 @@ export default function LocationInput() {
       justifyContent="center"
       sx={{ width: 1, height: '100vh' }}
     >
+      <Container>
+        <Typography variant="h1" align="center" gutterBottom>
+          dmh-ipapi
+        </Typography>
+      </Container>
       <Input
         onChange={(e) => handleInput(e.target.value)}
         placeholder="valid IPv4/IPv6 address"
         type="search"
       />
-
       <Stack direction="row" spacing={8}>
         <Stack justifyContent="center" alignItems="center">
           {locationState.loading ? (
@@ -124,6 +127,10 @@ export default function LocationInput() {
           {locationState.status === 'success' && (
             <div>
               <p>
+                <strong>Success!</strong> Based on the IP address provided, it
+                appears the location of their origin is:
+              </p>
+              <p>
                 <strong>City:</strong> {locationState.city}
               </p>
               <p>
@@ -152,7 +159,17 @@ export default function LocationInput() {
             </div>
           )}
         </Stack>
-      </Stack>
+      </Stack>{' '}
+      <Container>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          align="center"
+          gutterBottom
+        >
+          {'please hire me <3'}
+        </Typography>
+      </Container>
     </Stack>
   );
 }
