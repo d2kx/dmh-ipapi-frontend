@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import { useDebounce } from 'use-debounce';
 import CheckIcon from '@mui/icons-material/Check';
 import ErrorIcon from '@mui/icons-material/Error';
+import InfoIcon from '@mui/icons-material/Info';
+import Container from '@mui/material/Container';
 
 interface LocationState {
   city?: string;
@@ -61,56 +63,96 @@ export default function LocationInput() {
   }, [debounceInput]);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stack spacing={2}>
-        <Input
-          onChange={(e) => handleInput(e.target.value)}
-          placeholder="valid IPv4/IPv6 address"
-          type="search"
-        />
-        <Stack direction="row" spacing={2}>
+    <Stack
+      spacing={4}
+      justifyContent="center"
+      sx={{ width: 1, height: '100vh' }}
+    >
+      <Input
+        onChange={(e) => handleInput(e.target.value)}
+        placeholder="valid IPv4/IPv6 address"
+        type="search"
+      />
+
+      <Stack direction="row" spacing={8}>
+        <Stack justifyContent="center" alignItems="center">
           {locationState.loading ? (
             <CircularProgress color="info" />
           ) : (
             <div>
               {locationState.status === 'success' && (
-                <div>
-                  <CheckIcon color="success" sx={{ fontSize: 40 }} />
-                  <ul>
-                    <li>Stadt: {locationState.city}</li>
-                    <li>Country: {locationState.country}</li>
-                    <li>IP address: {locationState.ipAddress}</li>
-                  </ul>
-                </div>
+                <CheckIcon color="success" sx={{ fontSize: 40 }} />
               )}
-              {locationState.status === 'fail' && (
-                <div>
-                  <ErrorIcon color="error" sx={{ fontSize: 40 }} />
-                  <ul>
-                    <li>
-                      Oh no! The external IP Geolocation API has not been able
-                      to process your request
-                    </li>
-                    <li>Error: {locationState.message}</li>
-                  </ul>
-                </div>
+              {(locationState.status === 'error' ||
+                locationState.status === 'fail') && (
+                <ErrorIcon color="error" sx={{ fontSize: 40 }} />
               )}
-              {locationState.status === 'error' && (
-                <div>
-                  <ErrorIcon color="error" sx={{ fontSize: 40 }} />
-                  <ul>
-                    <li>
-                      Oh no! The dmh-ipapi-backend has not been able to process
-                      your request
-                    </li>
-                    <li>Error: {locationState.message}</li>
-                  </ul>
-                </div>
+              {locationState.status === 'ready' && (
+                <InfoIcon color="warning" sx={{ fontSize: 40 }} />
               )}
             </div>
           )}
         </Stack>
+
+        <Stack justifyContent="center" alignItems="center">
+          {locationState.status === 'ready' && (
+            <div>
+              <p>
+                <strong>dmh-ipapi</strong> is a (very) simple service that maps
+                a given IPv4/IPv6 address to a country & city
+              </p>
+              <p>
+                It is running its own backend, but utilizes the
+                <strong> ip-api.com </strong> IP Geolocation API to fulfill your
+                requests
+              </p>
+              <p>
+                Please note that any input will be automatically processed (with
+                a small debounce) and there is some basic error handling that
+                will differentiate between errors on behalf of the
+                <strong> dmh-ipapi-backend</strong>, the external IP Geolocation
+                API service
+              </p>
+              <p>
+                It will also differentiate between user-errors (e.g. invalid
+                IPv4/IPv6 address that the backend won't forward to the IP
+                Gelocation API service) and external factors (hint: give
+                <strong> 127.0.0.1</strong> a try!)
+              </p>
+            </div>
+          )}
+          {locationState.status === 'success' && (
+            <div>
+              <p>
+                <strong>City:</strong> {locationState.city}
+              </p>
+              <p>
+                <strong>Country:</strong> {locationState.country}
+              </p>
+              <p>
+                <strong>IP:</strong> {locationState.ipAddress}
+              </p>
+            </div>
+          )}
+          {(locationState.status === 'error' ||
+            locationState.status === 'fail') && (
+            <div>
+              <p>
+                Oh no! The
+                <strong>
+                  {locationState.status === 'fail'
+                    ? ' external IP Gelocation API '
+                    : ' dmh-ipapi-backend '}
+                </strong>
+                has not been able to process your request!
+              </p>
+              <p>
+                <strong>Reason:</strong> {locationState.message}
+              </p>
+            </div>
+          )}
+        </Stack>
       </Stack>
-    </Box>
+    </Stack>
   );
 }
