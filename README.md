@@ -31,3 +31,9 @@ Please note that by default with local usage, the backend url is set to **localh
 ## one more thing
 
 please hire me <3
+
+## urls
+
+web: https://main.d1jguhm222xykg.amplifyapp.com/
+
+git: https://github.com/d2kx/dmh-ipapi-frontend

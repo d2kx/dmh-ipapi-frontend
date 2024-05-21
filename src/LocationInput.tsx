@@ -26,7 +26,6 @@ if (LOCAL_DOMAINS.includes(window.location.hostname)) {
 }
 
 export default function LocationInput() {
-  console.log(process.env);
   const [inputValue, setInputValue] = useState<string>('');
   const [locationState, setLocationState] = useState<LocationState>({
     loading: false,
