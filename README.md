@@ -26,7 +26,7 @@ npm run build
 
 and serve the static files with a web server of your choice.
 
-Please note that since this app is only meant for local use, the backend url is statically set to **localhost:3100**, matching the default of dmh-ipapi-backend.
+Please note that by default with local usage, the backend url is set to **localhost:3100**, matching the default of dmh-ipapi-backend.
 
 ## one more thing
 

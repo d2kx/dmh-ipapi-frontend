@@ -18,9 +18,16 @@ interface LocationState {
   status: 'error' | 'fail' | 'ready' | 'success';
 }
 
-const URL = 'http://localhost:3100/api/location/';
+let URL =
+  'http://dmh-ipapi-backend-micro.us-east-1.elasticbeanstalk.com/api/location/';
+
+const LOCAL_DOMAINS = ['localhost', '127.0.0.1'];
+if (LOCAL_DOMAINS.includes(window.location.hostname)) {
+  URL = 'http://localhost:3100/api/location/';
+}
 
 export default function LocationInput() {
+  console.log(process.env);
   const [inputValue, setInputValue] = useState<string>('');
   const [locationState, setLocationState] = useState<LocationState>({
     loading: false,
